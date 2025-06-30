@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Object-Aware B-Spline Gaussian Splatting for Self-Supervised Autonomous Driving">
+  <meta name="keywords" content="AD-GS, Gaussian Splatting, Gaussian">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AD-GS: Object-Aware B-Spline Gaussian Splatting for Self-Supervised Autonomous Driving</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="icon" href="./static/images/favicon.svg"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-2 publication-title">AD-GS: Object-Aware B-Spline Gaussian Splatting for Self-Supervised Autonomous Driving</h1>
+          <h1 class="is-size-3 conference">ICCV 2025</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <!-- <a href="https://keunhong.com">Jiawei Xu</a><sup>1</sup>, -->
+               Jiawei Xu <sup>1</sup>,
+              <!-- <a>Jiawei Xu</a><sup></sup>, -->
+            </span>
+            <span class="author-block">
+              <!-- <a>Kai Deng</a><sup></sup>, -->
+              Kai Deng <sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <!-- <a>Zexin Fan</a><sup></sup>, -->
+              Zexin Fan <sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://shenlong.web.illinois.edu/">Shenlong Wang</a><sup>2</sup>,
+              <!-- Shenlong Wang <sup>2</sup>, -->
+            </span>
+            <span class="author-block"></span>
+              <a href="https://gsmis.njust.edu.cn/open/TutorInfo.aspx?dsbh=t6AONNl4pZ5la8fwtaQrXw==&yxsh=z70ppxVSQAs=&zydm=eNM2K21sgHA=">Jian Yang</a><sup>1 *</sup>,
+               <!-- Jian Yang <sup>1 *</sup> -->
+            </span> and
+            <span class="author-block">
+              <!-- Jin Xie <sup>3 4 *</sup>, -->
+              <a href="https://csjinxie.github.io">Jin Xie</a> <sup>3 4 *</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-6 publication-authors">
+            <span class="author-block"><sup>1</sup> PCA Lab, VCIP, College of Computer Science, Nankai University </span>
+            <span class="author-block"><sup>2</sup> University of Illinois Urbana-Champaign </span>
+            <span class="author-block"><sup>3</sup> State Key Laboratory for Novel Software Technology, Nanjing University, Nanjing, China </span>
+            <span class="author-block"><sup>4</sup> School of Intelligence Science and Technology, Nanjing University, Suzhou, China </span><br>
+            <span class="author-block"><sup>*</sup> Corresponding Authors </span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/JiaweiXu8/AD-GS"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <!-- <span class="link-block">
+                <a href="https://github.com/google/nerfies/releases/tag/0.1"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero is-light is-small">
+  <br>
+  <br>
+  <h2 class="title is-3", style="text-align: center;">Qualitative Results on the Waymo Dataset</h2>
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-waymo-006">
+          <video poster="" id="waymo-006" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/waymo-006.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-waymo-026">
+          <video poster="" id="waymo-026" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/waymo-026.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-waymo-090">
+          <video poster="" id="waymo-090" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/waymo-090.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-waymo-105">
+          <video poster="" id="waymo-105" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/waymo-105.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-waymo-108">
+          <video poster="" id="waymo-108" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/waymo-108.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-waymo-134">
+          <video poster="" id="waymo-134" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/waymo-134.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-waymo-150">
+          <video poster="" id="waymo-150" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/waymo-150.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-waymo-181">
+          <video poster="" id="waymo-181" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/waymo-181.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <h2 class="title is-3", style="text-align: center;">Qualitative Results on the KITTI Dataset</h2>
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="kitti0001" autoplay controls muted loop playsinline height="100%">
+        <source src="./static/videos/kitti-0001.mp4"
+                type="video/mp4">
+      </video>
+      <video id="kitti0002" autoplay controls muted loop playsinline height="100%">
+        <source src="./static/videos/kitti-0002.mp4"
+                type="video/mp4">
+      </video>
+      <video id="kitti0006" autoplay controls muted loop playsinline height="100%">
+        <source src="./static/videos/kitti-0006.mp4"
+                type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <br>
+  <br>
+  <h2 class="title is-3", style="text-align: center;">Qualitative Results on the nuScenes Dataset</h2>
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="nuscenes295" autoplay controls muted loop playsinline height="100%">
+        <source src="./static/videos/nuscenes-295.mp4"
+                type="video/mp4">
+      </video>
+      <video id="nuscenes518" autoplay controls muted loop playsinline height="100%">
+        <source src="./static/videos/nuscenes-518.mp4"
+                type="video/mp4">
+      </video>
+      <video id="nuscenes749" autoplay controls muted loop playsinline height="100%">
+        <source src="./static/videos/nuscenes-749.mp4"
+                type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section"></section>
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Pipeline of AD-GS</h2>
+        <br>
+        <div class="content has-text-justified">
+          <img style="width: 110%;" src="./static/images/pipeline.png" alt="AD-GS architecture.">
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+          Modeling and rendering dynamic urban driving scenes is crucial for self-driving simulation. 
+          Current high-quality methods typically rely on costly manual object tracklet annotations, while self-supervised approaches fail to capture dynamic object motions accurately and decompose scenes properly, resulting in rendering artifacts. 
+          We introduce AD-GS, a novel self-supervised framework for high-quality free-viewpoint rendering of driving scenes from a single log. 
+          At its core is a novel learnable motion model that integrates locality-aware B-spline curves with global-aware trigonometric functions, enabling flexible yet precise dynamic object modeling. 
+          Rather than requiring comprehensive semantic labeling, AD-GS automatically segments scenes into objects and background with the simplified pseudo 2D segmentation, representing objects using dynamic Gaussians and bidirectional temporal visibility masks. 
+          Further, our model incorporates visibility reasoning and physically rigid regularization to enhance robustness.
+          Extensive evaluations demonstrate that our annotation-free model significantly outperforms current state-of-the-art annotation-free methods and is competitive with annotation-dependent approaches. 
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<br>
+<br>
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{xu2025adgs,
+    title={{AD-GS}: Object-Aware {B-Spline} {Gaussian} Splatting for Self-Supervised Autonomous Driving},
+    author={Jiawei, Xu and Kai, Deng and Zexin, Fan and Shenlong, Wang and Jian, Yang and Jin, Xie},
+    journal={International Conference on Computer Vision},
+    year={2025},
+}</code></pre>
+    <!-- <pre><code>@article{park2021nerfies,
+  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
+  title     = {Nerfies: Deformable Neural Radiance Fields},
+  journal   = {ICCV},
+  year      = {2021},
+}</code></pre> -->
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/JiaweiXu8/AD-GS" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p style="text-align: center;">We sincerely thank the authors of <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> for the template of this website.</p>
+          <!-- <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
